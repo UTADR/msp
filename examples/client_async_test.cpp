@@ -1,6 +1,6 @@
-#include <Client.hpp>
 #include <iostream>
-#include <msp_msg.hpp>
+#include <msp/Client.hpp>
+#include <msp/msp_msg.hpp>
 
 struct SubCallbacks {
     void onIdent(const msp::msg::Ident& ident) { std::cout << ident; }

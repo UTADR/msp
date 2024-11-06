@@ -1,6 +1,6 @@
-#include <Client.hpp>
+#include <msp/Client.hpp>
 #include <iostream>
-#include <msp_msg.hpp>
+#include <msp/msp_msg.hpp>
 
 int main(int argc, char *argv[]) {
     const std::string device =

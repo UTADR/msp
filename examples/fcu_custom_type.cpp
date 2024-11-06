@@ -1,4 +1,4 @@
-#include <FlightController.hpp>
+#include <msp/FlightController.hpp>
 #include <iostream>
 
 struct MyIdent : public msp::Message {

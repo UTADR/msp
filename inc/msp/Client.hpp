@@ -8,10 +8,10 @@
 #include <mutex>
 #include <string>
 #include <thread>
-#include "ByteVector.hpp"
-#include "FirmwareVariants.hpp"
-#include "Message.hpp"
-#include "Subscription.hpp"
+#include "msp/ByteVector.hpp"
+#include "msp/FirmwareVariants.hpp"
+#include "msp/Message.hpp"
+#include "msp/Subscription.hpp"
 
 namespace msp {
 namespace client {

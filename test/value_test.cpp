@@ -1,6 +1,6 @@
-#include "Value.hpp"
+#include "msp/Value.hpp"
 #include <type_traits>
-#include "ByteVector.hpp"
+#include "msp/ByteVector.hpp"
 #include "gtest/gtest.h"
 
 namespace msp {

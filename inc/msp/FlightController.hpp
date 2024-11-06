@@ -1,9 +1,9 @@
 #ifndef FLIGHTCONTROLLER_HPP
 #define FLIGHTCONTROLLER_HPP
 
-#include "Client.hpp"
-#include "FlightMode.hpp"
-#include "PeriodicTimer.hpp"
+#include "msp/Client.hpp"
+#include "msp/FlightMode.hpp"
+#include "msp/PeriodicTimer.hpp"
 #include "msp_msg.hpp"
 
 namespace fcu {
