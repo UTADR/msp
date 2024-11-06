@@ -1,0 +1,8 @@
+include(CMakeFindDependencyMacro)
+
+block()
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}")
+find_dependency(ASIO MODULE REQUIRED)
+endblock()
+
+include("${CMAKE_CURRENT_LIST_DIR}/@CMAKE_PROJECT_NAME@Targets.cmake")
