@@ -12,7 +12,7 @@
   is active.
 **/
 
-#include <FlightController.hpp>
+#include <msp/FlightController.hpp>
 
 int main(int argc, char *argv[]) {
     const std::string device =

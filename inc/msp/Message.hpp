@@ -5,8 +5,8 @@
 #include <memory>
 #include <string>
 #include <vector>
-#include "ByteVector.hpp"
-#include "FirmwareVariants.hpp"
+#include "msp/ByteVector.hpp"
+#include "msp/FirmwareVariants.hpp"
 
 namespace msp {
 

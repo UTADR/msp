@@ -12,7 +12,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
-#include "Message.hpp"
+#include "msp/Message.hpp"
 
 /*================================================================
  * actual messages have id and the relevant encode decode methods

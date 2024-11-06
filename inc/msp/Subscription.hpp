@@ -2,9 +2,9 @@
 #define SUBSCRIPTION_HPP
 
 #include <functional>
-#include "Client.hpp"
-#include "Message.hpp"
-#include "PeriodicTimer.hpp"
+#include "msp/Client.hpp"
+#include "msp/Message.hpp"
+#include "msp/PeriodicTimer.hpp"
 
 namespace msp {
 namespace client {
