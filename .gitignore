@@ -1,3 +1,4 @@
+build/**
 # Qt Creator project file
 CMakeLists.txt.user
 
