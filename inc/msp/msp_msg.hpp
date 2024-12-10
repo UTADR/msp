@@ -151,6 +151,7 @@ enum class ID : uint16_t {
     MSP_GPS_CONFIG                     = 132,  // out message
     MSP_COMPASS_CONFIG                 = 133,  // out message
     MSP_ESC_SENSOR_DATA                = 134,  // out message
+    MSP_MOTOR_TELEMETRY                = 139,
     MSP_STATUS_EX                      = 150,
     MSP_SENSOR_STATUS                  = 151,  // only iNav
     MSP_UID                            = 160,
@@ -3973,6 +3974,33 @@ struct EscSensorData : public Message {
             rc &= data.unpack(esc.rpm);
             esc_data.push_back(esc);
         }
+        return rc;
+    }
+};
+
+// MSP_MOTOR_TELEMETRY: 139
+struct MotorTelem : public Message {
+    explicit MotorTelem(FirmwareVariant v) : Message(v) {}
+    ID id() const override { return ID::MSP_MOTOR_TELEMETRY; }
+    Value<int8_t> telemMotorCount;
+    std::array<Value<int32_t>, N_MOTOR> rpm;
+    std::array<Value<int16_t>, N_MOTOR> invalidPercent;
+    std::array<Value<int8_t>, N_MOTOR> temperature;
+    std::array<Value<int16_t>, N_MOTOR> voltage;
+    std::array<Value<int16_t>, N_MOTOR> current;
+    std::array<Value<int16_t>, N_MOTOR> consumption;
+    bool decode(const ByteVector& data) override {
+        bool rc = true;
+        rc &= data.unpack(telemMotorCount);
+        for(int i = 0; i < N_MOTOR; i++) {
+            rc &= data.unpack(rpm[i]);
+            rc &= data.unpack(invalidPercent[i]);
+            rc &= data.unpack(temperature[i]);
+            rc &= data.unpack(voltage[i]);
+            rc &= data.unpack(current[i]);
+            rc &= data.unpack(consumption[i]);
+        }
+
         return rc;
     }
 };
