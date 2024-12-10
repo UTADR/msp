@@ -26,6 +26,8 @@ cmake_dependent_option(MSP_INSTALL "Enable installation of the MSP target" ON
                        "${PROJECT_IS_TOP_LEVEL}" OFF)
 find_package(Threads)
 
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
 # ##############################################################################
 # libraries
 
