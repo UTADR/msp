@@ -10,12 +10,20 @@ if(POLICY CMP0074)
   cmake_policy(SET CMP0074 NEW)
 endif()
 
-# Localize the impact of setting CMAKE_MODULE_PATH
-block()
-set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/")
+option(MSP_USE_BOOST_ASIO "Use Boost.ASIO instead of standard Asio" ON)
 
-find_package(ASIO MODULE REQUIRED)
-endblock()
+if(MSP_USE_BOOST_ASIO)
+  find_package(Boost REQUIRED)
+  set(ASIO_NS BOOST_ASIO)
+else()
+  # Localize the impact of setting CMAKE_MODULE_PATH
+  block()
+  set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/")
+
+  find_package(ASIO MODULE REQUIRED)
+  set(ASIO_NS ASIO)
+  endblock()
+endif()
 
 include(CMakeDependentOption)
 cmake_dependent_option(MSP_BUILD_EXAMPLES "Build Library with examples" ON
@@ -23,7 +31,7 @@ cmake_dependent_option(MSP_BUILD_EXAMPLES "Build Library with examples" ON
 cmake_dependent_option(MSP_BUILD_TESTS "Build Library with tests" OFF
                        "${PROJECT_IS_TOP_LEVEL}" OFF)
 cmake_dependent_option(MSP_INSTALL "Enable installation of the MSP target" ON
-                       "${PROJECT_IS_TOP_LEVEL}" OFF)
+                       "NOT CMAKE_SKIP_INSTALL_RULES" OFF)
 find_package(Threads)
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
@@ -50,9 +58,12 @@ target_sources(
 target_compile_features(msp_msp INTERFACE cxx_std_17)
 target_compile_definitions(
   msp_msp
-  INTERFACE -DASIO_STANDALONE -DASIO_HAS_STD_ADDRESSOF -DASIO_HAS_STD_ARRAY
-            -DASIO_HAS_CSTDINT -DASIO_HAS_STD_SHARED_PTR
-            -DASIO_HAS_STD_TYPE_TRAITS)
+  INTERFACE $<$<NOT:$<BOOL:MSP_USE_BOOST_ASIO>>:-DASIO_STANDALONE>
+            -D${ASIO_NS}_HAS_STD_ADDRESSOF
+            -D${ASIO_NS}_HAS_STD_ARRAY
+            -D${ASIO_NS}_HAS_CSTDINT
+            -D${ASIO_NS}_HAS_STD_SHARED_PTR
+            -D${ASIO_NS}_HAS_STD_TYPE_TRAITS)
 set_target_properties(msp_msp PROPERTIES EXPORT_NAME msp)
 add_library(msp::msp ALIAS msp_msp)
 
@@ -68,7 +79,10 @@ target_sources(
          inc/msp/Client.hpp
          inc/msp/PeriodicTimer.hpp
   PRIVATE src/Client.cpp src/PeriodicTimer.cpp)
-target_link_libraries(msp_client PUBLIC Threads::Threads ASIO::ASIO msp::msp)
+target_link_libraries(
+  msp_client
+  PUBLIC Threads::Threads
+         $<IF:$<BOOL:${MSP_USE_BOOST_ASIO}>,Boost::boost,ASIO::ASIO> msp::msp)
 set_target_properties(msp_client PROPERTIES EXPORT_NAME client)
 add_library(msp::client ALIAS msp_client)
 

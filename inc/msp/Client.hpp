@@ -1,7 +1,11 @@
 #ifndef CLIENT_HPP
 #define CLIENT_HPP
 
-#include <asio.hpp>
+#ifdef ASIO_STANDALONE
+#include "asio.hpp"
+#else
+#include "boost/asio.hpp"
+#endif
 #include <condition_variable>
 #include <functional>
 #include <map>
@@ -14,6 +18,13 @@
 #include "msp/Subscription.hpp"
 
 namespace msp {
+
+#ifndef ASIO_STANDALONE
+namespace asio = boost::asio;
+using boost::system::error_code;
+#else
+using asio::error_code;
+#endif
 namespace client {
 
 typedef asio::buffers_iterator<asio::streambuf::const_buffers_type> iterator;
@@ -199,7 +210,7 @@ public:
      * @param ec ASIO error code
      * @param bytes_transferred Number of byte available for processing
      */
-    void processOneMessage(const asio::error_code& ec,
+    void processOneMessage(const error_code& ec,
                            const std::size_t& bytes_transferred);
 
     /**

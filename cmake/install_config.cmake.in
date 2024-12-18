@@ -1,8 +1,14 @@
 include(CMakeFindDependencyMacro)
 
-block()
-set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}")
-find_dependency(ASIO MODULE REQUIRED)
-endblock()
+set(MSP_USE_BOOST_ASIO @MSP_USE_BOOST_ASIO)
+
+if(MSP_USE_BOOST_ASIO)
+  find_dependency(Boost REQUIRED)
+else()
+  block()
+  set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}")
+  find_dependency(ASIO MODULE REQUIRED)
+  endblock()
+endif()
 
 include("${CMAKE_CURRENT_LIST_DIR}/@CMAKE_PROJECT_NAME@Targets.cmake")

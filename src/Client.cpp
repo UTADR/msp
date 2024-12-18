@@ -1,6 +1,6 @@
-#include <msp/Client.hpp>
 #include <cstdlib>
 #include <iostream>
+#include <msp/Client.hpp>
 
 typedef unsigned int uint;
 
@@ -62,7 +62,7 @@ bool Client::connectPort(const std::string& device, const size_t baudrate) {
 }
 
 bool Client::disconnectPort() {
-    asio::error_code ec;
+    error_code ec;
     port.close(ec);
     if(ec) return false;
     return true;
@@ -203,7 +203,7 @@ bool Client::sendData(const msp::ID id, const ByteVector& data) {
         msg = packMessageV1(id, data);
     }
     if(log_level_ >= DEBUG) std::cout << "packed: " << msg;
-    asio::error_code ec;
+    error_code ec;
     std::size_t bytes_written;
     {
         std::lock_guard<std::mutex> lock(mutex_send);
@@ -283,7 +283,7 @@ uint8_t Client::crcV2(uint8_t crc, const uint8_t& b) const {
     return crc;
 }
 
-void Client::processOneMessage(const asio::error_code& ec,
+void Client::processOneMessage(const error_code& ec,
                                const std::size_t& bytes_transferred) {
     if(log_level_ >= DEBUG)
         std::cout << "processOneMessage on " << bytes_transferred << " bytes"
